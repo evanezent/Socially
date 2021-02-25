@@ -11,8 +11,14 @@ class HandlerFunction {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   Future<UserModel> signInWithGoogle() async {
-    print("jalan");
-    final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+    GoogleSignInAccount googleSignInAccount;
+    try {
+      print("jalan");
+      googleSignInAccount = await googleSignIn.signIn();
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
     final GoogleSignInAuthentication googleSignInAuthentication =
         await googleSignInAccount.authentication;
 
@@ -52,15 +58,30 @@ class HandlerFunction {
 
   final _fbLogin = FacebookLogin();
 
-  Future facebookSignIn() async {
-    print("fb jalan");
-    final FacebookLoginResult result = await _fbLogin.logIn(["email"]);
-    final String token = result.accessToken.token;
+  Future<UserModel> facebookSignIn() async {
+    try {
+      print("fb jalan");
+      final FacebookLoginResult result = await _fbLogin.logIn(["email"]);
+      final String token = result.accessToken.token;
 
-    final response = await http.get(
-        'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email&access_token=${token}');
-    final profile = jsonDecode(response.body);
-    print(profile);
-    // return profile;
+      final response = await http.get(
+          'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email&access_token=${token}');
+      final profile = jsonDecode(response.body);
+
+      print(profile);
+
+      UserModel user = UserModel.toJson(profile);
+      return user;
+      // return profile;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  Future<void> signOutFacebook() async {
+    await _fbLogin.logOut();
+
+    print("User Signed Out");
   }
 }

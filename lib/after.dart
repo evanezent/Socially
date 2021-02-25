@@ -35,9 +35,19 @@ class _AfterLoginState extends State<AfterLogin> {
                 HandlerFunction().signOutGoogle();
                 Navigator.pop(context);
               },
-              color: Colors.blue,
+              color: Colors.white,
               child: Center(
                 child: Text("G-Sign Out"),
+              ),
+            ),
+            RaisedButton(
+              onPressed: () {
+                HandlerFunction().signOutFacebook();
+                Navigator.pop(context);
+              },
+              color: Colors.blue,
+              child: Center(
+                child: Text("F-Sign Out"),
               ),
             )
           ],

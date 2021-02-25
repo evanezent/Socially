@@ -87,7 +87,19 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           RaisedButton(
             onPressed: () {
-              HandlerFunction().facebookSignIn();
+              HandlerFunction().facebookSignIn().then((res) {
+                if (res != null) {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return AfterLogin(
+                          user: res,
+                        );
+                      },
+                    ),
+                  );
+                }
+              });
             },
             color: Colors.blue,
             child: Center(
