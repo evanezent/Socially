@@ -86,7 +86,9 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           RaisedButton(
-            onPressed: () {},
+            onPressed: () {
+              HandlerFunction().facebookSignIn();
+            },
             color: Colors.blue,
             child: Center(
               child: Text("Facebook"),
