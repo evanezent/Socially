@@ -55,8 +55,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  double animateHeight = 0;
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Soacially"),
@@ -78,7 +81,12 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   );
                 }
+              }).catchError((errorMessage) async {
+                if (errorMessage != 'CANCELLED_SIGN_IN') {
+                  print(errorMessage);
+                }
               });
+              ;
             },
             color: Colors.white,
             child: Center(
@@ -104,6 +112,46 @@ class _MyHomePageState extends State<MyHomePage> {
             color: Colors.blue,
             child: Center(
               child: Text("Facebook"),
+            ),
+          ),
+          Container(
+            width: size.width * 0.5,
+            margin: EdgeInsets.symmetric(horizontal: 20),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.teal,
+                boxShadow: [BoxShadow(blurRadius: 15, color: Colors.grey)]),
+            child: Column(
+              children: [
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      animateHeight = animateHeight == 0 ? 50 : 0;
+                    });
+                  },
+                  child: Container(
+                    height: 30,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Center(child: Text("Click and Expand")),
+                        Transform.rotate(
+                          angle: animateHeight == 0 ? 0 : 3.1,
+                          child: Icon(
+                            Icons.arrow_circle_down,
+                            color: Colors.amber,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                AnimatedContainer(
+                  duration: Duration(milliseconds: 700),
+                  height: animateHeight,
+                  child: Text("Expanded"),
+                )
+              ],
             ),
           )
         ],
